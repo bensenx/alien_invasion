@@ -27,7 +27,9 @@ class AlienInvasion:
         #设置背景色。
         self.bg_color = (230,230,230)
         #创建play 按钮
-        self.play_button = Button(self, "Play")
+        self.play_button = Button(self, "Play", 0)
+        self.level1 = Button(self, "Play Hard", 1)
+        self.level2 = Button(self, "Play Nightmare",2)
     def run_game(self):
         """开始游戏的主循环"""
         while True:
@@ -60,7 +62,15 @@ class AlienInvasion:
         button_clicked = self.play_button.rect.collidepoint(mouse_pos)
         if button_clicked and not self.stats.game_active:
             #重置游戏设置
-            self.settings.initialize_dynamic_settings()
+            self.settings.initialize_dynamic_settings(0)
+            self._start_game()
+        button_clicked_lv1 = self.level1.rect.collidepoint(mouse_pos)
+        if button_clicked_lv1 and not self.stats.game_active:
+            self.settings.initialize_dynamic_settings(1)
+            self._start_game()
+        button_clicked_lv2 = self.level2.rect.collidepoint(mouse_pos)
+        if button_clicked_lv2 and not self.stats.game_active:
+            self.settings.initialize_dynamic_settings(2)
             self._start_game()
            
 
@@ -151,6 +161,8 @@ class AlienInvasion:
         #如果游戏处于非活动状态，就绘制play 按钮
         if not self.stats.game_active:
             self.play_button.draw_button()
+            self.level1.draw_button()
+            self.level2.draw_button()
         pygame.display.flip()
 
     def _update_bullets(self):
