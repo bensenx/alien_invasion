@@ -59,6 +59,8 @@ class AlienInvasion:
         """在玩家单击play按钮时开始游戏"""
         button_clicked = self.play_button.rect.collidepoint(mouse_pos)
         if button_clicked and not self.stats.game_active:
+            #重置游戏设置
+            self.settings.initialize_dynamic_settings()
             self._start_game()
            
 
@@ -169,6 +171,7 @@ class AlienInvasion:
             #删除现有的子弹并新建一群外星人
             self.bullets.empty()
             self._create_fleet()
+            self.settings.increase_speed()
         
 
         
