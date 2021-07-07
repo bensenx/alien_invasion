@@ -67,15 +67,26 @@ class AlienInvasion:
             #重置游戏设置
             self.settings.initialize_dynamic_settings(0)
             self._start_game()
+            #重置游戏统计信息
+            self.stats.reset_stats()
+            self.stats.game_active =True
+            self.sb.pre_score()
         button_clicked_lv1 = self.level1.rect.collidepoint(mouse_pos)
         if button_clicked_lv1 and not self.stats.game_active:
             self.settings.initialize_dynamic_settings(1)
             self._start_game()
+            #重置游戏统计信息
+            self.stats.reset_stats()
+            self.stats.game_active =True
+            self.sb.pre_score()
         button_clicked_lv2 = self.level2.rect.collidepoint(mouse_pos)
         if button_clicked_lv2 and not self.stats.game_active:
             self.settings.initialize_dynamic_settings(2)
             self._start_game()
-           
+            #重置游戏统计信息
+            self.stats.reset_stats()
+            self.stats.game_active =True
+            self.sb.pre_score()
 
     def _start_game(self):
          #重置游戏统计信息
@@ -163,7 +174,7 @@ class AlienInvasion:
         self.aliens.draw(self.screen)
         #显示得分
         self.sb.show_score()
-        
+
         #如果游戏处于非活动状态，就绘制play 按钮
         if not self.stats.game_active:
             self.play_button.draw_button()
@@ -185,6 +196,9 @@ class AlienInvasion:
         """相应子弹和外星人碰撞"""
         #删除发生碰撞的子弹和外星人
         collisions = pygame.sprite.groupcollide(self.bullets, self.aliens, True, True)
+        if collisions:
+            self.stats.score += self.settings.alien_points
+            self.sb.pre_score()
         if not self.aliens:
             #删除现有的子弹并新建一群外星人
             self.bullets.empty()
