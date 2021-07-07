@@ -7,6 +7,7 @@ from bullet import Bullet
 from alien import Alien
 from game_stats import GameStats
 from button import Button
+from scoreboard import Scoreboard
 class AlienInvasion:
     """管理游戏资源和行为的类"""
     def __init__(self) -> None:
@@ -19,7 +20,9 @@ class AlienInvasion:
         #self.screen = pygame.display.set_mode((self.settings.screen_width,self.settings.screen_height))
         pygame.display.set_caption("Alien Invasion")
         #创建一个用于存储游戏统计信息的实例。
+        #并创建记分牌
         self.stats = GameStats(self)
+        self.sb = Scoreboard(self)
         self.ship =Ship(self)
         self.bullets = pygame.sprite.Group()
         self.aliens = pygame.sprite.Group()
@@ -27,9 +30,9 @@ class AlienInvasion:
         #设置背景色。
         self.bg_color = (230,230,230)
         #创建play 按钮
-        self.play_button = Button(self, "Play", 0)
-        self.level1 = Button(self, "Play Hard", 1)
-        self.level2 = Button(self, "Play Nightmare",2)
+        self.play_button = Button(self, "Easy", 0)
+        self.level1 = Button(self, "Hard", 1)
+        self.level2 = Button(self, "Nightmare",2)
     def run_game(self):
         """开始游戏的主循环"""
         while True:
@@ -158,6 +161,9 @@ class AlienInvasion:
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
         self.aliens.draw(self.screen)
+        #显示得分
+        self.sb.show_score()
+        
         #如果游戏处于非活动状态，就绘制play 按钮
         if not self.stats.game_active:
             self.play_button.draw_button()
