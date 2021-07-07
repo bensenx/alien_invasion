@@ -72,6 +72,7 @@ class AlienInvasion:
             self.stats.game_active =True
             self.sb.prep_score()
             self.sb.prep_level()
+            self.sb.prep_ships()
         button_clicked_lv1 = self.level1.rect.collidepoint(mouse_pos)
         if button_clicked_lv1 and not self.stats.game_active:
             self.settings.initialize_dynamic_settings(1)
@@ -81,6 +82,7 @@ class AlienInvasion:
             self.stats.game_active =True
             self.sb.prep_score()
             self.sb.prep_level()
+            self.sb.prep_ships()
         button_clicked_lv2 = self.level2.rect.collidepoint(mouse_pos)
         if button_clicked_lv2 and not self.stats.game_active:
             self.settings.initialize_dynamic_settings(2)
@@ -90,6 +92,7 @@ class AlienInvasion:
             self.stats.game_active =True
             self.sb.prep_score()
             self.sb.prep_level()
+            self.sb.prep_ships()
 
     def _start_game(self):
          #重置游戏统计信息
@@ -250,6 +253,14 @@ class AlienInvasion:
                 #像飞船被撞到一样处理
                 self._ship_hit()
                 break
+
+    def _ship_hit(self):
+        """响应飞船被外星人撞到"""
+        if self.stats.ships_left > 0:
+            #将ships_left 减1并更新记分牌
+            self.stats.ships_left -=1
+            self.sb.prep_ships()
+
 if __name__ == '__main__':
     #创建游戏实例并运行游戏。
     ai = AlienInvasion()
