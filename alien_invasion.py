@@ -70,7 +70,8 @@ class AlienInvasion:
             #重置游戏统计信息
             self.stats.reset_stats()
             self.stats.game_active =True
-            self.sb.pre_score()
+            self.sb.prep_score()
+            self.sb.prep_level()
         button_clicked_lv1 = self.level1.rect.collidepoint(mouse_pos)
         if button_clicked_lv1 and not self.stats.game_active:
             self.settings.initialize_dynamic_settings(1)
@@ -78,7 +79,8 @@ class AlienInvasion:
             #重置游戏统计信息
             self.stats.reset_stats()
             self.stats.game_active =True
-            self.sb.pre_score()
+            self.sb.prep_score()
+            self.sb.prep_level()
         button_clicked_lv2 = self.level2.rect.collidepoint(mouse_pos)
         if button_clicked_lv2 and not self.stats.game_active:
             self.settings.initialize_dynamic_settings(2)
@@ -86,7 +88,8 @@ class AlienInvasion:
             #重置游戏统计信息
             self.stats.reset_stats()
             self.stats.game_active =True
-            self.sb.pre_score()
+            self.sb.prep_score()
+            self.sb.prep_level()
 
     def _start_game(self):
          #重置游戏统计信息
@@ -198,14 +201,17 @@ class AlienInvasion:
         collisions = pygame.sprite.groupcollide(self.bullets, self.aliens, True, True)
         if collisions:
             for aliens in collisions.values():
-                self.stats.score += self.settings.alien_points
-                self.sb.pre_score()
+                self.stats.score += self.settings.alien_points * len(aliens)
+                self.sb.prep_score()
+                self.sb.check_high_score()
         if not self.aliens:
             #删除现有的子弹并新建一群外星人
             self.bullets.empty()
             self._create_fleet()
             self.settings.increase_speed()
-        
+            #提高等级
+            self.stats.level += 1
+            self.sb.prep_level()
 
         
 
